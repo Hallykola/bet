@@ -1,4 +1,12 @@
+import 'package:bettingtips/api/api_response.dart';
+import 'package:bettingtips/blocs/tips_bloc.dart';
+import 'package:bettingtips/blocs/user_bloc.dart';
+import 'package:bettingtips/models/tip.dart';
+import 'package:bettingtips/utils/constants.dart';
 import 'package:bettingtips/views/partials/Concept1Drawer/Concept1Drawer.dart';
+import 'package:bettingtips/views/partials/Concept1Drawer/tiplist.dart';
+import 'package:bettingtips/views/partials/api_error.dart';
+import 'package:bettingtips/views/partials/loading.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:bettingtips/Template_Material/Sample_Screen/Animation/FadeAnimation.dart';
@@ -8,7 +16,9 @@ import 'package:provider/provider.dart';
 import 'DrawerScreen.dart';
 
 class TipsDetails extends StatefulWidget {
-  TipsDetails({Key key}) : super(key: key);
+  String tag;
+  String title;
+  TipsDetails({Key key, this.tag, this.title}) : super(key: key);
 
   @override
   _TipsDetailsState createState() => _TipsDetailsState();
@@ -17,9 +27,13 @@ class TipsDetails extends StatefulWidget {
 class _TipsDetailsState extends State<TipsDetails>
     with TickerProviderStateMixin {
   MenuController menuController;
+  String tag;
+  String title;
 
   @override
   void initState() {
+    tag = widget.tag;
+    title = widget.title;
     super.initState();
 
     menuController = new MenuController(
@@ -29,7 +43,7 @@ class _TipsDetailsState extends State<TipsDetails>
 
   @override
   void dispose() {
-    menuController.dispose();
+    //menuController.dispose();
     super.dispose();
   }
 
@@ -38,6 +52,8 @@ class _TipsDetailsState extends State<TipsDetails>
     return ChangeNotifierProvider(
       create: (context) => menuController,
       child: ScreenHomePage(
+        tag: tag,
+        title: title,
         menuScreen: MenuScreen(),
         contentScreen: Layout(
             contentBuilder: (cc) => Container(
@@ -62,10 +78,14 @@ class Layout {
 class ScreenHomePage extends StatefulWidget {
   final Widget menuScreen;
   final Layout contentScreen;
+  final String tag;
+  final String title;
 
   ScreenHomePage({
     this.menuScreen,
     this.contentScreen,
+    this.tag,
+    this.title,
   });
 
   @override
@@ -78,88 +98,105 @@ class _ScreenHomePageState extends State<ScreenHomePage> {
   Curve slideOutCurve = new Interval(0.0, 1.0, curve: Curves.easeOut);
   Curve slideInCurve = new Interval(0.0, 1.0, curve: Curves.easeOut);
 
+  TipsBloc _tipsBloc;
+  String mytag;
+  String mytitle;
+
+  @override
+  void initState() {
+    _tipsBloc = new TipsBloc();
+    mytag = widget.tag;
+    mytitle = widget.title;
+    super.initState();
+  }
+
+  void dispose() {
+    _tipsBloc.dispose();
+    super.dispose();
+  }
+
   createContentDisplay() {
+    UserBloc user = UserBloc();
+    bool admin = user.isAdmin;
     return zoomAndSlideContent(new Container(
       child: new Scaffold(
-        backgroundColor: Colors.white,
+          backgroundColor: Colors.white,
 
-        // backgroundColor: Colors.white,
+          // backgroundColor: Colors.white,
 
-        // Calling variable appbar
-        appBar: AppBar(
-          backgroundColor: Color(0xFFFFFFFF),
-          elevation: 0.0,
-          centerTitle: true,
-          title: Padding(
-            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-            child: Text(
-              "Game Tips",
-              style: TextStyle(
-                  fontFamily: "Sofia",
-                  fontSize: 23.0,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-          leading: new IconButton(
-              icon: Icon(
-                EvaIcons.menu2Outline,
-                color: Colors.black,
+          // Calling variable appbar
+          appBar: AppBar(
+            backgroundColor: Color(0x00008B), //Color(0xFFFFFFFF),
+            elevation: 0.0,
+            centerTitle: true,
+            title: Padding(
+              padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+              child: Text(
+                mytitle,
+                style: TextStyle(
+                    fontFamily: "Sofia",
+                    fontSize: 23.0,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700),
               ),
-              onPressed: () {
-                Provider.of<MenuController>(context, listen: false).toggle();
-              }),
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: InkWell(onTap: () {}, child: Icon(EvaIcons.personOutline)),
             ),
-          ],
-        ),
-
-        body: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              InkWell(
-                  onTap: () {},
-                  child: FadeAnimation(
-                    0.2,
-                    itemCard(
-                      image: "assets/images/category3.jpg",
-                      title: "Restaurant",
-                    ),
-                  )),
-              InkWell(
-                  onTap: () {},
-                  child: FadeAnimation(
-                    0.3,
-                    itemCard(
-                      image: "assets/images/category5.jpg",
-                      title: "Home Made",
-                    ),
-                  )),
-              InkWell(
-                  onTap: () {},
-                  child: FadeAnimation(
-                    0.4,
-                    itemCard(
-                      image: "assets/images/category6.jpg",
-                      title: "Street Food",
-                    ),
-                  )),
-              InkWell(
-                  onTap: () {},
-                  child: FadeAnimation(
-                    0.5,
-                    itemCard(
-                      image: "assets/images/category7.jpg",
-                      title: "Catering Service",
-                    ),
-                  )),
+            leading: new IconButton(
+                icon: Icon(
+                  EvaIcons.menu2Outline,
+                  color: Colors.black,
+                ),
+                onPressed: () {
+                  Provider.of<MenuController>(context, listen: false).toggle();
+                }),
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child:
+                    InkWell(onTap: () {}, child: Icon(EvaIcons.personOutline)),
+              ),
             ],
           ),
-        ),
-      ),
+          floatingActionButton: admin
+              ? FloatingActionButton(
+                  onPressed: () => AddTipDialog(context),
+                  tooltip: 'Add Tip',
+                  child: Icon(Icons.add),
+                )
+              : Container(),
+          body: Container(
+            color: Colors.black,
+            padding: EdgeInsets.all(Constants.commonPadding),
+            child: RefreshIndicator(
+                onRefresh: () => _tipsBloc.fetchTips(),
+                child: StreamBuilder<ApiResponse<List<Tip>>>(
+                    stream: _tipsBloc.tipsstream,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        switch (snapshot.data.status) {
+                          case Status.LOADING:
+                            return Loading(
+                              loadingMessage: snapshot.data.message,
+                            );
+                            break;
+                          case Status.COMPLETED:
+                            return TipList(
+                                tipList: snapshot.data.data, tag: mytag);
+                            // return Loading(
+                            //   loadingMessage: 'Done',
+                            // );
+                            break;
+
+                          case Status.ERROR:
+                            return ApiError(
+                              errorMessage: snapshot.data.message,
+                              onRetryPressed: () => _tipsBloc.fetchTips(),
+                            );
+                            break;
+                        }
+                      }
+                      return Container();
+                    })),
+          )),
     ));
   }
 

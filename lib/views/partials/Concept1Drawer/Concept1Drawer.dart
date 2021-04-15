@@ -1,6 +1,7 @@
 import 'package:bettingtips/api/api_response.dart';
 import 'package:bettingtips/blocs/tips_bloc.dart';
-import 'package:bettingtips/models/tip.dart';
+import 'package:bettingtips/blocs/user_bloc.dart';
+import 'package:bettingtips/models/mycategorie.dart';
 import 'package:bettingtips/utils/constants.dart';
 import 'package:bettingtips/views/partials/Concept1Drawer/catlist.dart';
 import 'package:bettingtips/views/partials/api_error.dart';
@@ -98,6 +99,8 @@ class _ScreenHomePageState extends State<ScreenHomePage> {
   }
 
   createContentDisplay() {
+    UserBloc user = UserBloc();
+    bool admin = user.isAdmin;
     return zoomAndSlideContent(new Container(
       child: new Scaffold(
           backgroundColor: Colors.white,
@@ -136,12 +139,20 @@ class _ScreenHomePageState extends State<ScreenHomePage> {
               ),
             ],
           ),
+          floatingActionButton: admin
+              ? FloatingActionButton(
+                  onPressed: () => AddDialog(context),
+                  tooltip: 'Add Category',
+                  child: Icon(Icons.add),
+                )
+              : Container(),
           body: Container(
+            color: Colors.black,
             padding: EdgeInsets.all(Constants.commonPadding),
             child: RefreshIndicator(
-                onRefresh: () => _tipsBloc.fetchTips(),
-                child: StreamBuilder<ApiResponse<List<Tip>>>(
-                    stream: _tipsBloc.tipsstream,
+                onRefresh: () => _tipsBloc.fetchCats(),
+                child: StreamBuilder<ApiResponse<List<Categorie>>>(
+                    stream: _tipsBloc.catsstream,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         switch (snapshot.data.status) {
@@ -151,7 +162,7 @@ class _ScreenHomePageState extends State<ScreenHomePage> {
                             );
                             break;
                           case Status.COMPLETED:
-                            return TipList(tipList: snapshot.data.data);
+                            return CatsList(catList: snapshot.data.data);
                             // return Loading(
                             //   loadingMessage: 'Done',
                             // );
@@ -160,7 +171,7 @@ class _ScreenHomePageState extends State<ScreenHomePage> {
                           case Status.ERROR:
                             return ApiError(
                               errorMessage: snapshot.data.message,
-                              onRetryPressed: () => _tipsBloc.fetchTips(),
+                              onRetryPressed: () => _tipsBloc.fetchCats(),
                             );
                             break;
                         }

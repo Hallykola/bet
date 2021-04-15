@@ -6,6 +6,8 @@ The task of the repository is to deliver movies data
 to the BLOC after fetching it from the API.
  */
 
+import 'dart:convert';
+
 import 'package:bettingtips/api/api_base_helper.dart';
 import 'package:bettingtips/models/bettip.dart';
 import 'package:bettingtips/models/tip.dart';
@@ -23,17 +25,18 @@ class BettipRepository {
 
   Future<List<Tip>> fetchSpecificTipCategory(cat) async {
     final response =
-        await _helper.get(Constants.alltips + '?filter=category,eq,$cat');
-    return Bettip.fromJson(response).tip;
+        await _helper.get(Constants.alltips + '?filter=tags,eq,$cat');
+    return TipResponse.fromJson(response).results;
   }
 
   Future<List<Tip>> fetchSpecificTip(id) async {
     final response = await _helper.get(Constants.alltips + '?filter=id,eq,$id');
-    return Bettip.fromJson(response).tip;
+    return TipResponse.fromJson(response).results;
   }
 
-  Future<bool> editTip(id, tip) async {
-    final response = await _helper.put(Constants.alltips + '/$id', tip);
+  Future<bool> editTip(id, Tip tip) async {
+    final response = await _helper.put(
+        Constants.alltips + '/$id', json.encode(tip.toJson()));
     //final response = await _helper.post(Constants.allusers, user);
 
     return true;
@@ -47,7 +50,8 @@ class BettipRepository {
   }
 
   Future<Tip> createTip(tip) async {
-    final response = await _helper.post(Constants.alltips, tip);
+    final response =
+        await _helper.post(Constants.alltips, json.encode(tip.toJson()));
 
     if (!(response == null)) {
       final newresponse = await _helper.get(Constants.alltips + '/$response');

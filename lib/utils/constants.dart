@@ -4,15 +4,15 @@ class Constants {
   /// general setup
   static String appId = "com.halgorithm.plasticcycle";
   static String iosAppId = "com.halgorithm.plasticcycle";
-  static String appName = "Plastic Cycle";
-  static String appTagLine =
-      "Buiild a FLutter app like a Pro by Using the BLoC Pattern!";
-  static String appBio = "The Best Flutter Starter Kit";
-  static String contactEmail = "support@acelords.space";
-  static String logoKey = "assets/images/logo.png";
+  static String appName = "Winning Bet Tips";
+  static String apptag = "The best";
+  static String appTagLine = "Winning tips for your games";
+  static String appBio = "The Best Tips for Bets";
+  static String contactEmail = "bettips@gmail.com";
+  static String logoKey = "assets/images/stadium.jpg";
   static String appAbout =
-      "Using this app will improve your project deliverability and sharpen your understanding of Flutter"
-      "and BLoC pattern in no time. Build Flutter apps like a pro!";
+      "Using this app, you can make the best prediction for your bets"
+      "and WIN BIG ";
 
   //my api strings
   static String allusers =
@@ -20,7 +20,9 @@ class Constants {
   static String resetpass =
       "https://teleprintersoftwares.com/plasticcycle/forgotpassword.php";
   static String alltips =
-      "https://teleprintersoftwares.com/recfiles/api.php/records/bettips";
+      "https://teleprintersoftwares.com/recfiles/api.php/records/bettip";
+  static String categories =
+      "https://teleprintersoftwares.com/recfiles/api.php/records/betcat";
 
   /// Share message
   static String shareLink = "http://bit.ly/acelords";

@@ -1,61 +1,52 @@
 import 'package:bettingtips/blocs/tips_bloc.dart';
-import 'package:bettingtips/models/tip.dart';
+import 'package:bettingtips/blocs/user_bloc.dart';
+import 'package:bettingtips/models/mycategorie.dart';
+import 'package:bettingtips/views/partials/Concept1Drawer/tipsdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:bettingtips/Template_Material/Sample_Screen/Animation/FadeAnimation.dart';
 
-class TipList extends StatelessWidget {
-  final List<Tip> tipList;
+class CatsList extends StatelessWidget {
+  final List<Categorie> catList;
 
-  const TipList({Key key, this.tipList}) : super(key: key);
+  const CatsList({Key key, this.catList}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        RaisedButton(
-          onPressed: () {
-            AddDialog(context);
-          },
-          child: Text('Add'),
-        ),
-        Expanded(
-          child: ListView.builder(
-            itemCount: tipList.length,
-            // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            //   crossAxisCount: 2,
-            //   childAspectRatio: 1.5 / 1.8,
-            // ),
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: InkWell(
-                    onTap: () {},
-                    child: FadeAnimation(
-                      0.5,
-                      itemCard(
-                        image: "assets/images/category7.jpg",
-                        title: tipList[index].title,
-                        tip: tipList[index],
-                      ),
-                    )),
-              );
-            },
-          ),
-        ),
-      ],
+    return ListView.builder(
+      itemCount: catList.length,
+      // gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      //   crossAxisCount: 2,
+      //   childAspectRatio: 1.5 / 1.8,
+      // ),
+      itemBuilder: (context, index) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
+              onTap: () {},
+              child: FadeAnimation(
+                0.5,
+                itemCard(
+                  image: "assets/images/category7.jpg",
+                  title: catList[index].name,
+                  cat: catList[index],
+                ),
+              )),
+        );
+      },
     );
   }
 }
 
 class itemCard extends StatelessWidget {
   String image, title;
-  Tip tip;
+  Categorie cat;
   TipsBloc _tipsBloc;
-  itemCard({this.image, this.title, this.tip});
+  itemCard({this.image, this.title, this.cat});
 
   @override
   Widget build(BuildContext context) {
+    UserBloc user = UserBloc();
+    bool admin = user.isAdmin;
     return Padding(
       padding:
           const EdgeInsets.only(left: 10.0, right: 10.0, top: 8.0, bottom: 5.0),
@@ -67,7 +58,7 @@ class itemCard extends StatelessWidget {
         child: Material(
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Colors.black,
               borderRadius: BorderRadius.all(Radius.circular(15.0)),
               image:
                   DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
@@ -88,35 +79,54 @@ class itemCard extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        shadows: [
-                          BoxShadow(
-                              color: Colors.black.withOpacity(0.7),
-                              blurRadius: 10.0,
-                              spreadRadius: 2.0)
-                        ],
-                        color: Colors.white,
-                        fontFamily: "Sofia",
-                        fontWeight: FontWeight.w800,
-                        fontSize: 39.0,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                TipsDetails(title: cat.name, tag: cat.tags),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                          shadows: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.7),
+                                blurRadius: 10.0,
+                                spreadRadius: 2.0)
+                          ],
+                          color: Colors.white,
+                          fontFamily: "Sofia",
+                          fontWeight: FontWeight.w800,
+                          fontSize: 39.0,
+                        ),
                       ),
                     ),
                     SizedBox(height: 8),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Icon(Icons.edit, color: Colors.blueAccent),
-                        SizedBox(width: 18),
-                        GestureDetector(
-                            onTap: () {
-                              simpleDialog(context, tip);
-                            },
-                            child: Icon(Icons.delete, color: Colors.redAccent)),
-                      ],
-                    )
+                    admin
+                        ? Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              GestureDetector(
+                                  onTap: () {
+                                    AddDialog(context, cat: cat);
+                                  },
+                                  child: Icon(Icons.edit,
+                                      color: Colors.blueAccent)),
+                              SizedBox(width: 18),
+                              GestureDetector(
+                                  onTap: () {
+                                    simpleDialog(context, cat);
+                                  },
+                                  child: Icon(Icons.delete,
+                                      color: Colors.redAccent)),
+                            ],
+                          )
+                        : Container(),
                   ],
                 ),
               ),
@@ -128,13 +138,13 @@ class itemCard extends StatelessWidget {
   }
 }
 
-void simpleDialog(BuildContext context, Tip tip) {
+void simpleDialog(BuildContext context, Categorie cat) {
   showDialog(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Delete Tip?",
+        title: Text("Delete Category?",
             style: TextStyle(
                 fontFamily: "Sofia",
                 fontWeight: FontWeight.w700,
@@ -150,7 +160,8 @@ void simpleDialog(BuildContext context, Tip tip) {
             child: const Text('OK', style: TextStyle(fontFamily: "Sofia")),
             onPressed: () {
               TipsBloc bloc = new TipsBloc();
-              bloc.deleteTip(tip.id);
+              bloc.deleteCat(cat.id);
+              bloc.fetchCats();
               Navigator.of(context).pop();
             },
           )
@@ -160,73 +171,130 @@ void simpleDialog(BuildContext context, Tip tip) {
   );
 }
 
-void AddDialog(BuildContext context, {Tip tip}) {
+void AddDialog(BuildContext context, {Categorie cat}) {
   final _formKey = GlobalKey<FormState>();
-  Tip nutip = new Tip();
+  bool editing = false;
   TextEditingController catname = new TextEditingController();
   TextEditingController tags = new TextEditingController();
+  TextEditingController description = new TextEditingController();
+
+  if (cat != null) {
+    catname.text = cat.name;
+    tags.text = cat.tags;
+    description.text = cat.description;
+    editing = true;
+    // id.text = cat.id;
+  }
   showDialog(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Add Tip",
+        title: Text("Add Category",
             style: TextStyle(
                 fontFamily: "Sofia",
                 fontWeight: FontWeight.w700,
                 fontSize: 18.0)),
-        content: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                // The validator receives the text that the user has entered.
-                controller: tags,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some tip name';
-                  }
-                  return null;
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
-                    autofocus: false,
-                    controller: catname,
-                    cursorColor: Colors.amber,
-                    style: TextStyle(height: 2.0),
-                    cursorWidth: 2.5,
-                    decoration: InputDecoration(
-                      labelText: "Category name",
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          borderSide: BorderSide(
-                              color: Colors.amber, style: BorderStyle.solid)),
+        content: Container(
+          child: SingleChildScrollView(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                        autofocus: false,
+                        controller: catname,
+                        cursorColor: Colors.amber,
+                        style: TextStyle(height: 2.0),
+                        cursorWidth: 2.5,
+                        decoration: InputDecoration(
+                          labelText: "Category name",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                              borderSide: BorderSide(
+                                  color: Colors.amber,
+                                  style: BorderStyle.solid)),
+                        ),
+                        onFieldSubmitted: (text) {
+                          print(text);
+                        },
+                        validator: (value) {
+                          if (value.isEmpty || value == " ") {
+                            return "Value cannot  be empty";
+                          }
+                          //return "";
+                        }),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "Tags",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide(
+                                color: Colors.amber, style: BorderStyle.solid)),
+                      ),
+                      // The validator receives the text that the user has entered.
+                      controller: tags,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some Categorie name';
+                        }
+                        return null;
+                      },
                     ),
-                    onFieldSubmitted: (text) {
-                      print(text);
-                    },
-                    validator: (value) {
-                      if (value.isEmpty || value == " ") {
-                        return "Value cannot  be empty";
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        labelText: "Description",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide(
+                                color: Colors.amber, style: BorderStyle.solid)),
+                      ),
+                      // The validator receives the text that the user has entered.
+                      controller: description,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter some Categorie name';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Validate returns true if the form is valid, or false otherwise.
+                      if (_formKey.currentState.validate()) {
+                        // Scaffold.of(context).showSnackBar(
+                        //     SnackBar(content: Text('Processing Data')));
+                        Categorie acat = new Categorie(
+                            name: catname.text,
+                            tags: tags.text,
+                            description: description.text);
+                        TipsBloc bloc = new TipsBloc();
+                        if (editing) {
+                          print('I want to edit');
+                          bloc.editcat(cat.id, acat);
+                        } else {
+                          print('I want to add');
+                          bloc.addcat(acat);
+                        }
+                        bloc.fetchCats();
+                        Navigator.of(context).pop();
                       }
-                      return "";
-                    }),
+                    },
+                    child: Text('Submit'),
+                  ),
+                ],
               ),
-              ElevatedButton(
-                onPressed: () {
-                  // Validate returns true if the form is valid, or false otherwise.
-                  if (_formKey.currentState.validate()) {
-                    Scaffold.of(context).showSnackBar(
-                        SnackBar(content: Text('Processing Data')));
-                    TipsBloc bloc = new TipsBloc();
-                    bloc.add(nutip);
-                  }
-                },
-                child: Text('Submit'),
-              ),
-            ],
+            ),
           ),
         ),
         actions: <Widget>[
@@ -236,14 +304,12 @@ void AddDialog(BuildContext context, {Tip tip}) {
               Navigator.of(context).pop();
             },
           ),
-          FlatButton(
-            child: const Text('OK', style: TextStyle(fontFamily: "Sofia")),
-            onPressed: () {
-              TipsBloc bloc = new TipsBloc();
-              bloc.deleteTip(tip.id);
-              Navigator.of(context).pop();
-            },
-          )
+          // FlatButton(
+          //   child: const Text('OK', style: TextStyle(fontFamily: "Sofia")),
+          //   onPressed: () {
+          //     Navigator.of(context).pop();
+          //   },
+          // )
         ],
       );
     },

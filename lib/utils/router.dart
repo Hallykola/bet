@@ -7,9 +7,10 @@ import 'package:bettingtips/views/pages/rate_app.dart';
 import 'package:bettingtips/views/pages/refer_a_friend.dart';
 import 'package:bettingtips/views/pages/splash_page.dart';
 import 'package:bettingtips/views/pages/mylogin.dart';
+import 'package:bettingtips/views/partials/Concept1Drawer/Concept1Drawer.dart';
 
 Object appRoutes = {
-  '/': (context) => HomePage(),
+  '/': (context) => Concept1Drawer(), //HomePage(),
 //  '/auth': (context) => Router(),
 
 // pages

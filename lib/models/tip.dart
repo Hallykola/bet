@@ -12,7 +12,7 @@ class Tip {
   String date;
 
   Tip({
-    this.id,
+    this.id = 0,
     this.teama,
     this.teamb,
     this.teamalast,
@@ -22,7 +22,7 @@ class Tip {
     this.drawodd,
     this.description,
     this.tags,
-    this.date,
+    this.date = "",
   });
 
   Tip.fromJson(Map<String, dynamic> json) {
@@ -41,7 +41,7 @@ class Tip {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
+    data['id'] = this.id.toString();
     data['teama'] = this.teama;
     data['teamb'] = this.teamb;
     data['teamaodd'] = this.teamaodd;
@@ -51,7 +51,7 @@ class Tip {
     data['teamblast'] = this.teamblast;
     data['description'] = this.description;
     data['tags'] = this.tags;
-    data['date'] = this.date;
+    //data['date'] = this.date;
 
     return data;
   }

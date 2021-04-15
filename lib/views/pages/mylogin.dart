@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bettingtips/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:bettingtips/repositories/user_repo.dart';
@@ -83,8 +84,8 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
-      title: 'Plastic Cycle',
-      logo: 'assets/images/acelords_brand.png',
+      title: Constants.appName,
+      logo: 'assets/images/stadium.jpg',
       onLogin: _authUser,
       onSignup: _createUser,
       onSubmitAnimationCompleted: () {

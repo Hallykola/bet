@@ -1,3 +1,5 @@
+import 'package:bettingtips/utils/constants.dart';
+import 'package:bettingtips/utils/styles.dart';
 import 'package:bettingtips/views/partials/Concept1Drawer/tipsdetails.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
@@ -33,8 +35,10 @@ class MenuScreen extends StatelessWidget {
             bottom: 8,
             right: MediaQuery.of(context).size.width / 2.9),
         decoration: BoxDecoration(
-            gradient:
-                LinearGradient(colors: [Color(0xFFF07DA4), Color(0xFFF5AE87)])),
+            gradient: LinearGradient(colors: [
+          Styles.appPrimaryColorDark,
+          Styles.appPrimaryColor
+        ])), //Color(0xFFF07DA4), Color(0xFFF5AE87)
         child: Column(
           children: <Widget>[
             InkWell(
@@ -59,7 +63,7 @@ class MenuScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Dakota Jonson',
+                        Constants.appName,
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w600,
@@ -68,7 +72,7 @@ class MenuScreen extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'dakota@gmail.com',
+                        Constants.apptag,
                         style: TextStyle(
                           color: Colors.white54,
                           fontFamily: "Sofia",
@@ -107,7 +111,8 @@ class MenuScreen extends StatelessWidget {
                       );
                     },
                     child: _listText("Details", EvaIcons.bell)),
-                _listText("Subscribe", EvaIcons.phone),
+                _mylistText("Subscribe", EvaIcons.phone, context, "/about"),
+                _mylistText("Login", EvaIcons.phone, context, "/login"),
                 _listText("Settings", EvaIcons.settings),
                 _listText("Favorite", EvaIcons.heart),
               ],
@@ -152,6 +157,45 @@ class MenuScreen extends StatelessWidget {
                 fontSize: 16.0),
           )
         ],
+      ),
+    );
+  }
+
+  Widget _mylistText(
+      String _text, IconData _iconData, BuildContext context, String route) {
+    return GestureDetector(
+      onTap: () {
+        Provider.of<MenuController>(context, listen: false).toggle();
+        Navigator.pushNamed(context, route);
+      },
+      child: Padding(
+        padding: EdgeInsets.only(bottom: 30.0),
+        child: Row(
+          children: <Widget>[
+            Container(
+              height: 45.0,
+              width: 45.0,
+              decoration: BoxDecoration(),
+              child: Center(
+                child: Icon(
+                  _iconData,
+                  color: Colors.white70,
+                ),
+              ),
+            ),
+            SizedBox(
+              width: 20.0,
+            ),
+            Text(
+              _text,
+              style: TextStyle(
+                  fontFamily: "Sofia",
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white.withOpacity(0.9),
+                  fontSize: 16.0),
+            )
+          ],
+        ),
       ),
     );
   }

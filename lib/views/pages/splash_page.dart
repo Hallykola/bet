@@ -21,7 +21,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _seen = (prefs.getBool(Constants.appPreviouslyRunKey) ?? false);
 
-    if (_seen) {
+    if (!_seen) {
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => Concept1Drawer()));
     } else {
@@ -90,7 +90,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
               Container(
                 padding: EdgeInsets.all(20),
                 height: 250,
-                child: Image.asset('assets/images/acelords_brand.png'),
+                child: Image.asset('assets/images/stadium.jpg'),
               ),
               SizedBox(
                 height: 10.0,
