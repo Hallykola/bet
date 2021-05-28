@@ -2,10 +2,14 @@ class UserBloc {
   bool isAdmin;
 
   UserBloc() {
-    isAdmin = fetchStatus();
+    isAdmin = false;
   }
 
   bool fetchStatus() {
-    return true;
+    return isAdmin;
+  }
+
+  setAdmin(bool admin) {
+    isAdmin = admin;
   }
 }

@@ -4,6 +4,7 @@ import 'package:bettingtips/models/mycategorie.dart';
 import 'package:bettingtips/views/partials/Concept1Drawer/tipsdetails.dart';
 import 'package:flutter/material.dart';
 import 'package:bettingtips/Template_Material/Sample_Screen/Animation/FadeAnimation.dart';
+import 'package:provider/provider.dart';
 
 class CatsList extends StatelessWidget {
   final List<Categorie> catList;
@@ -45,7 +46,7 @@ class itemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserBloc user = UserBloc();
+    UserBloc user = Provider.of<UserBloc>(context, listen: false);
     bool admin = user.isAdmin;
     return Padding(
       padding:

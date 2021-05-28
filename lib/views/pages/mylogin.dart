@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:bettingtips/blocs/user_bloc.dart';
 import 'package:bettingtips/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:bettingtips/repositories/user_repo.dart';
 import 'package:bettingtips/models/records.dart';
+import 'package:provider/provider.dart';
 import 'dashboard.dart';
 import 'package:crypto/crypto.dart';
 import 'package:password/password.dart';
@@ -39,7 +41,9 @@ class LoginScreen extends StatelessWidget {
       if (!(digest.toString() == myuser.password)) {
         return 'Password does not match';
       }
-
+      if (!(myuser.description == "admin")) {
+        return 'You are not an admin';
+      }
       return null;
     });
   }
@@ -89,9 +93,11 @@ class LoginScreen extends StatelessWidget {
       onLogin: _authUser,
       onSignup: _createUser,
       onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => DashboardPage(),
-        ));
+        // Navigator.of(context).pushReplacement(MaterialPageRoute(
+        //   builder: (context) => DashboardPage(),
+        // ));
+        Navigator.pushNamed(context, '/');
+        Provider.of<UserBloc>(context, listen: false).setAdmin(true);
       },
       onRecoverPassword: _recoverPassword,
     );

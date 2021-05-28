@@ -99,7 +99,7 @@ class _ScreenHomePageState extends State<ScreenHomePage> {
   }
 
   createContentDisplay() {
-    UserBloc user = UserBloc();
+    UserBloc user = Provider.of<UserBloc>(context, listen: false);
     bool admin = user.isAdmin;
     return zoomAndSlideContent(new Container(
       child: new Scaffold(
