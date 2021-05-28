@@ -111,18 +111,22 @@ class MenuScreen extends StatelessWidget {
                       );
                     },
                     child: _listText("Details", EvaIcons.bell)),
-                _mylistText("Subscribe", EvaIcons.phone, context, "/about"),
-                _mylistText("Login", EvaIcons.phone, context, "/login"),
-                _listText("Settings", EvaIcons.settings),
-                _listText("Favorite", EvaIcons.heart),
+                // _mylistText("Subscribe", EvaIcons.phone, context, "/about"),
+                // _mylistText("Login", EvaIcons.phone, context, "/login"),
+                _mylistText("About", EvaIcons.phone, context, "/about"),
+                // _listText("Settings", EvaIcons.settings),
+                // _listText("Favorite", EvaIcons.heart),
               ],
             ),
             Spacer(),
             InkWell(
                 onTap: () {
-                  Navigator.of(context).pop();
+                    do{
+                    Navigator.of(context).pop();
+                  }
+                  while (Navigator.canPop(context)); 
                 },
-                child: _listText("Logout", Icons.exit_to_app)),
+                child: _listText("Exit", Icons.exit_to_app)),
           ],
         ),
       ),

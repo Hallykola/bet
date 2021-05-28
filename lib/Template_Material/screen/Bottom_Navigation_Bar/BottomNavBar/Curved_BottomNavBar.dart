@@ -1,9 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:bigkit_material/Template_Material/Sample_Screen/Brand.dart';
-import 'package:bigkit_material/Template_Material/Sample_Screen/Favorite.dart';
-import 'package:bigkit_material/Template_Material/Sample_Screen/Home.dart';
-import 'package:bigkit_material/Template_Material/Sample_Screen/Profile.dart';
+import 'package:bettingtips/Template_Material/Sample_Screen/Brand.dart';
+import 'package:bettingtips/Template_Material/Sample_Screen/Favorite.dart';
+import 'package:bettingtips/Template_Material/Sample_Screen/Home.dart';
+import 'package:bettingtips/Template_Material/Sample_Screen/Profile.dart';
 
 class CurvedBottomNavBar extends StatefulWidget {
   @override

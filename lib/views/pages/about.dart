@@ -281,15 +281,23 @@ class _ScreenHomePageState extends State<ScreenHomePage> {
   Curve slideOutCurve = new Interval(0.0, 1.0, curve: Curves.easeOut);
   Curve slideInCurve = new Interval(0.0, 1.0, curve: Curves.easeOut);
 
+  String _platformVersion = 'Unknown';
+  String _projectVersion = '';
+  String _projectCode = '';
+  String _projectAppID = '';
+  String _projectName = '';
+
   TipsBloc _tipsBloc;
   String mytag;
   String mytitle;
+  int knock = 0;
 
   @override
   void initState() {
     _tipsBloc = new TipsBloc();
     mytag = widget.tag;
     mytitle = widget.title;
+    _setPackageInfo();
     super.initState();
   }
 
@@ -298,71 +306,66 @@ class _ScreenHomePageState extends State<ScreenHomePage> {
     super.dispose();
   }
 
-  createContentDisplay() {
-    String _platformVersion = 'Unknown';
-    String _projectVersion = '';
-    String _projectCode = '';
-    String _projectAppID = '';
-    String _projectName = '';
+  _setPackageInfo() async {
+    String platformVersion;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      platformVersion = await GetVersion.platformVersion;
+    } on PlatformException {
+      platformVersion = 'Failed to get platform version.';
+    }
 
+    String projectVersion;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      projectVersion = await GetVersion.projectVersion;
+    } on PlatformException {
+      projectVersion = 'Failed to get project version.';
+    }
+
+    String projectCode;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      projectCode = await GetVersion.projectCode;
+    } on PlatformException {
+      projectCode = 'Failed to get build number.';
+    }
+
+    String projectAppID;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      projectAppID = await GetVersion.appID;
+    } on PlatformException {
+      projectAppID = 'Failed to get app ID.';
+    }
+
+    String projectName;
+    // Platform messages may fail, so we use a try/catch PlatformException.
+    try {
+      projectName = await GetVersion.appName;
+    } on PlatformException {
+      projectName = 'Failed to get app name.';
+    }
+
+    // If the widget was removed from the tree while the asynchronous platform
+    // message was in flight, we want to discard the reply rather than calling
+    // setState to update our non-existent appearance.
+    if (!mounted) return;
+
+    setState(() {
+      _platformVersion = platformVersion;
+      _projectVersion = projectVersion;
+      _projectCode = projectCode;
+      _projectAppID = projectAppID;
+      _projectName = projectName;
+    });
+    print('I tried to get package');
+  }
+
+  createContentDisplay() {
     Color iconColor = Colors.grey[500];
     TextStyle titleStyle = TextStyle(color: Colors.grey[700]);
     TextStyle subtitleStyle = TextStyle(color: Colors.grey[500]);
-
-    _setPackageInfo() async {
-      String platformVersion;
-      // Platform messages may fail, so we use a try/catch PlatformException.
-      try {
-        platformVersion = await GetVersion.platformVersion;
-      } on PlatformException {
-        platformVersion = 'Failed to get platform version.';
-      }
-
-      String projectVersion;
-      // Platform messages may fail, so we use a try/catch PlatformException.
-      try {
-        projectVersion = await GetVersion.projectVersion;
-      } on PlatformException {
-        projectVersion = 'Failed to get project version.';
-      }
-
-      String projectCode;
-      // Platform messages may fail, so we use a try/catch PlatformException.
-      try {
-        projectCode = await GetVersion.projectCode;
-      } on PlatformException {
-        projectCode = 'Failed to get build number.';
-      }
-
-      String projectAppID;
-      // Platform messages may fail, so we use a try/catch PlatformException.
-      try {
-        projectAppID = await GetVersion.appID;
-      } on PlatformException {
-        projectAppID = 'Failed to get app ID.';
-      }
-
-      String projectName;
-      // Platform messages may fail, so we use a try/catch PlatformException.
-      try {
-        projectName = await GetVersion.appName;
-      } on PlatformException {
-        projectName = 'Failed to get app name.';
-      }
-
-      // If the widget was removed from the tree while the asynchronous platform
-      // message was in flight, we want to discard the reply rather than calling
-      // setState to update our non-existent appearance.
-      if (!mounted) return;
-      _setPackageInfo();
-      setState(() {
-        _platformVersion = platformVersion;
-        _projectVersion = projectVersion;
-        _projectCode = projectCode;
-        _projectAppID = projectAppID;
-        _projectName = projectName;
-      });
-    }
 
     return zoomAndSlideContent(new Container(
       child: new Scaffold(
@@ -373,7 +376,7 @@ class _ScreenHomePageState extends State<ScreenHomePage> {
           title: Padding(
             padding: const EdgeInsets.only(left: 10.0, right: 10.0),
             child: Text(
-              mytitle,
+              Constants.appName, //mytitle,
               style: TextStyle(
                   fontFamily: "Sofia",
                   fontSize: 23.0,
@@ -469,13 +472,23 @@ class _ScreenHomePageState extends State<ScreenHomePage> {
               Divider(
                 height: 20.0,
               ),
-              ListTile(
-                leading: Icon(
-                  Icons.info,
-                  color: iconColor,
+              GestureDetector(
+                onDoubleTap: () {
+                  knock++;
+                  print('i am knocking');
+                  print(knock.toString());
+                  if (knock == 5) {
+                    Navigator.popAndPushNamed(context, '/login');
+                  }
+                },
+                child: ListTile(
+                  leading: Icon(
+                    Icons.info,
+                    color: iconColor,
+                  ),
+                  title: Text('Version Code', style: titleStyle),
+                  subtitle: Text(_projectCode, style: subtitleStyle),
                 ),
-                title: Text('Version Code', style: titleStyle),
-                subtitle: Text(_projectCode, style: subtitleStyle),
               ),
               Divider(
                 height: 20.0,

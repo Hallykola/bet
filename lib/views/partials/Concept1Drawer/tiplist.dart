@@ -33,7 +33,7 @@ class TipList extends StatelessWidget {
                 0.5,
                 tipList[index].tags.contains(tag)
                     ? itemCard(
-                        image: "assets/images/stadium1.jpg",
+                        image: "assets/images/bgtile.jpg",
                         title:
                             '${tipList[index].teama} vs ${tipList[index].teamb}',
                         tip: tipList[index],

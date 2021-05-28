@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 // primaryColor = #9b51e0 rgb(155,81,224)
 
 class Styles {
-  static Color appPrimaryColorDark = Color(0xFF00022E);
-  static Color appPrimaryColor =
-      Color(0xFF00068A); //Color.fromRGBO(155, 81, 224, 1);
+  static Color appPrimaryColorDark = Colors.grey[850]; //Color(0xFF00022E);
+  static Color appPrimaryColor = Colors.grey[700];
+  // Color(0xFF00068A); //Color.fromRGBO(155, 81, 224, 1);
   static Color appAccentColor = Colors.cyan[600];
   static Color appCanvasColor = Colors.white;
   static Color appBackground = Colors.blue;

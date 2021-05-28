@@ -48,7 +48,7 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
 //          fit: BoxFit.cover,
 //        ),
 //      ),
-      color: Styles.appPrimaryColor,
+      color: Colors.white, //Styles.appPrimaryColor,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Container(
@@ -57,45 +57,10 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
             borderRadius: BorderRadius.circular(20),
             color: Colors.transparent,
           ),
-          child: ListView(
-            children: <Widget>[
-              SizedBox(
-                height: 150.0,
-              ),
-              Center(
-                child: Text(
-                  Constants.appName,
-                  style: Styles.h1_white.copyWith(
-                    fontSize: 45,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(45, 5, 45, 5),
-                child: Divider(
-                  color: Colors.grey[300],
-                ),
-              ),
-              Text(
-                Constants.appTagLine,
-                style: Styles.p_white.copyWith(
-                  fontSize: 20,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: 30.0,
-              ),
-              Container(
-                padding: EdgeInsets.all(20),
-                height: 250,
-                child: Image.asset('assets/images/stadium.jpg'),
-              ),
-              SizedBox(
-                height: 10.0,
-              ),
-            ],
+          child: Container(
+            padding: EdgeInsets.all(20),
+            height: MediaQuery.of(context).size.height,
+            child: Image.asset('assets/images/wineasily.png'),
           ),
         ),
       ),
