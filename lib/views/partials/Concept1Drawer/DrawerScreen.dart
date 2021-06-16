@@ -121,10 +121,11 @@ class MenuScreen extends StatelessWidget {
             Spacer(),
             InkWell(
                 onTap: () {
-                    do{
-                    Navigator.of(context).pop();
-                  }
-                  while (Navigator.canPop(context)); 
+                  Navigator.of(context).pop();
+                  //   do{
+                  //   Navigator.of(context).pop();
+                  // }
+                  // while (Navigator.canPop(context));
                 },
                 child: _listText("Exit", Icons.exit_to_app)),
           ],

@@ -58,14 +58,14 @@ class LoginScreen extends StatelessWidget {
     var digest = hmacSha256.convert(bytes);
     String pass = digest.toString();
     return Future.delayed(loginTime).then((_) async {
-      Records myuser =
-          new Records(name: "", password: pass, email: data.name, username: "");
-      Records user = await userrepo.registeruser(myuser.regtoJson());
-      if (user.email.isEmpty) {
-        return 'Unable to register user. Try again';
-      }
-
-      return null;
+      // Records myuser =
+      //     new Records(name: "", password: pass, email: data.name, username: "");
+      // Records user = await userrepo.registeruser(myuser.regtoJson());
+      // if (user.email.isEmpty) {
+      //   return 'Unable to register user. Try again';
+      // }
+      return "Registration is disabled";
+      //return null;
     });
   }
 

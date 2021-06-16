@@ -3,7 +3,7 @@ import 'package:bettingtips/blocs/user_bloc.dart';
 import 'package:bettingtips/models/mycategorie.dart';
 import 'package:bettingtips/views/partials/Concept1Drawer/tipsdetails.dart';
 import 'package:flutter/material.dart';
-import 'package:bettingtips/Template_Material/Sample_Screen/Animation/FadeAnimation.dart';
+import 'package:bettingtips/views/partials/FadeAnimation.dart';
 import 'package:provider/provider.dart';
 
 class CatsList extends StatelessWidget {
@@ -27,7 +27,7 @@ class CatsList extends StatelessWidget {
               child: FadeAnimation(
                 0.5,
                 itemCard(
-                  image: "assets/images/category7.jpg",
+                  image: "assets/images/ballbgtile.jpg",
                   title: catList[index].name,
                   cat: catList[index],
                 ),

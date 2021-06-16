@@ -4,7 +4,7 @@ import 'package:bettingtips/models/mycategorie.dart';
 import 'package:bettingtips/models/tip.dart';
 import 'package:bettingtips/views/partials/Concept1Drawer/tipsdetails.dart';
 import 'package:flutter/material.dart';
-import 'package:bettingtips/Template_Material/Sample_Screen/Animation/FadeAnimation.dart';
+import 'package:bettingtips/views/partials/FadeAnimation.dart';
 import 'package:provider/provider.dart';
 
 class TipList extends StatelessWidget {

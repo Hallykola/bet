@@ -9,7 +9,7 @@ import 'package:bettingtips/views/partials/api_error.dart';
 import 'package:bettingtips/views/partials/loading.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:bettingtips/Template_Material/Sample_Screen/Animation/FadeAnimation.dart';
+import 'package:bettingtips/views/partials/FadeAnimation.dart';
 
 import 'package:provider/provider.dart';
 
